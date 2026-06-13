@@ -7,322 +7,50 @@
   <title>ENGINE DIAGNOSTICS | تشخيص أعطال المحركات</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-      -webkit-tap-highlight-color: transparent;
-    }
-    body {
-      background: #0a0c12;
-      color: #f0f3f8;
-      font-family: 'Segoe UI', system-ui, sans-serif;
-      padding: 1rem;
-    }
-    .container {
-      max-width: 700px;
-      margin: auto;
-      background: #0e1422;
-      border-radius: 2rem;
-      border: 1px solid #f5a623;
-      overflow: hidden;
-      box-shadow: 0 20px 35px -12px black;
-    }
-    .header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      background: #0b0f18;
-      padding: 0.8rem 1rem;
-      border-bottom: 3px solid #f5a623;
-      gap: 10px;
-    }
-    .qr-code {
-      width: 48px;
-      height: 48px;
-      background: white;
-      border-radius: 12px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      overflow: hidden;
-    }
-    .qr-code canvas {
-      width: 42px;
-      height: 42px;
-    }
-    .title-section {
-      text-align: center;
-      flex: 1;
-    }
-    .title-fixed {
-      font-size: 1.4rem;
-      font-weight: 800;
-      letter-spacing: 1px;
-      background: linear-gradient(135deg, #ffe6b0, #f5a623);
-      background-clip: text;
-      -webkit-background-clip: text;
-      color: transparent;
-    }
-    .title-translated {
-      font-size: 0.75rem;
-      color: #b9c7d9;
-      margin-top: 4px;
-    }
-    .engine-icon {
-      position: relative;
-      cursor: pointer;
-      width: 48px;
-      height: 48px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-    }
-    .engine-icon .fa-car-side {
-      font-size: 2rem;
-      color: #f5a623;
-    }
-    .engine-icon .fa-stethoscope {
-      position: absolute;
-      font-size: 1rem;
-      top: 0;
-      right: 0;
-      background: #0b0f18;
-      border-radius: 50%;
-      padding: 2px;
-      transform: translate(4px, -4px);
-      color: #f5a623;
-    }
-    .info-strip {
-      display: flex;
-      justify-content: space-between;
-      background: #00000066;
-      padding: 6px 12px;
-      font-size: 0.7rem;
-      flex-wrap: wrap;
-      gap: 6px;
-      align-items: center;
-    }
-    .lang-device {
-      display: flex;
-      gap: 8px;
-      align-items: center;
-    }
-    .lang-select {
-      background: #1e2a3a;
-      border: 1px solid #f5a623;
-      border-radius: 40px;
-      padding: 4px 8px;
-      color: white;
-      font-size: 0.7rem;
-      cursor: pointer;
-    }
-    .device-id {
-      background: #1e2a3a;
-      border-radius: 40px;
-      padding: 4px 10px;
-      font-family: monospace;
-      font-size: 0.7rem;
-    }
-    .free-badge {
-      background: #f5a62320;
-      text-align: center;
-      margin: 12px 12px 6px;
-      padding: 8px;
-      border-radius: 40px;
-      font-weight: bold;
-      color: #f5a623;
-    }
-    .credit-card {
-      background: #0f172a;
-      border-radius: 1.5rem;
-      margin: 12px;
-      padding: 12px;
-      text-align: center;
-      border: 1px solid #f5a623;
-    }
-    .credit-amount {
-      font-size: 1.8rem;
-      font-weight: 800;
-      color: #f5a623;
-    }
-    .pay-buttons {
-      display: flex;
-      gap: 10px;
-      justify-content: center;
-      margin: 10px 0;
-      flex-wrap: wrap;
-    }
-    .pay-btn {
-      background: #10b981;
-      border: none;
-      border-radius: 60px;
-      padding: 6px 14px;
-      font-weight: bold;
-      cursor: pointer;
-      color: white;
-      font-size: 0.8rem;
-    }
-    .engine-icons-row {
-      display: flex;
-      justify-content: space-around;
-      flex-wrap: wrap;
-      gap: 12px;
-      margin: 12px 12px 6px;
-      padding: 8px;
-      background: #0b0f18;
-      border-radius: 30px;
-    }
-    .engine-icon-item {
-      text-align: center;
-      cursor: pointer;
-      min-width: 65px;
-    }
-    .engine-icon-item i {
-      font-size: 1.8rem;
-      color: #f5a623;
-      display: block;
-      margin-bottom: 4px;
-    }
-    .engine-icon-item span {
-      font-size: 0.65rem;
-      display: block;
-    }
-    .btn-primary {
-      background: #8b5cf6;
-      width: 100%;
-      padding: 12px;
-      border: none;
-      border-radius: 40px;
-      font-weight: bold;
-      color: white;
-      margin: 12px 0;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    .sensor-card {
-      background: #1e2a3e;
-      border-radius: 1.5rem;
-      padding: 12px;
-      margin: 12px;
-      border: 2px solid #3b82f6;
-    }
-    .sensor-header {
-      display: flex;
-      align-items: center;
-      gap: 10px;
-      margin-bottom: 6px;
-    }
-    .sensor-icon {
-      font-size: 1.6rem;
-      color: #f5a623;
-    }
-    .sensor-result {
-      background: #03060c;
-      border-radius: 1rem;
-      padding: 8px;
-      margin-top: 8px;
-      font-size: 0.8rem;
-      min-height: 55px;
-      border: 1px dashed #f5a623;
-    }
-    button {
-      background: #f97316;
-      border: none;
-      border-radius: 40px;
-      padding: 6px 12px;
-      font-weight: bold;
-      cursor: pointer;
-      color: white;
-    }
-    button:disabled {
-      opacity: 0.5;
-      cursor: not-allowed;
-    }
-    .result-area {
-      background: #0a1020;
-      border-radius: 1.5rem;
-      margin: 12px;
-      padding: 16px;
-      border: 2px solid #f5a623;
-      display: none;
-    }
-    video, canvas, .preview-img {
-      width: 100%;
-      max-height: 160px;
-      border-radius: 12px;
-      margin-top: 6px;
-      background: black;
-    }
-    .toast {
-      position: fixed;
-      bottom: 20px;
-      left: 50%;
-      transform: translateX(-50%);
-      background: #f97316;
-      padding: 5px 15px;
-      border-radius: 30px;
-      opacity: 0;
-      transition: 0.2s;
-      z-index: 999;
-      color: black;
-      font-weight: bold;
-      white-space: nowrap;
-    }
-    .toast.show {
-      opacity: 1;
-    }
-    .modal-settings {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      background: rgba(0, 0, 0, 0.85);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      visibility: hidden;
-    }
-    .modal-settings.show {
-      visibility: visible;
-    }
-    .modal-content {
-      background: #1e2a3a;
-      border-radius: 2rem;
-      padding: 20px;
-      width: 90%;
-      max-width: 350px;
-      text-align: center;
-    }
-    footer {
-      text-align: center;
-      padding: 12px;
-      font-size: 0.6rem;
-      border-top: 1px solid #2a3a5a;
-      margin-top: 10px;
-    }
-    .action-buttons {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 8px;
-      margin-top: 12px;
-    }
-    .action-btn {
-      background: #2d3a4e;
-      padding: 6px 12px;
-      border-radius: 40px;
-      cursor: pointer;
-      font-size: 0.7rem;
-    }
-    .hidden {
-      display: none;
-    }
-    input, select {
-      font-family: inherit;
-    }
+    * { margin: 0; padding: 0; box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+    body { background: #0a0c12; color: #f0f3f8; font-family: 'Segoe UI', system-ui, sans-serif; padding: 1rem; }
+    .container { max-width: 700px; margin: auto; background: #0e1422; border-radius: 2rem; border: 1px solid #f5a623; overflow: hidden; box-shadow: 0 20px 35px -12px black; }
+    .header { display: flex; align-items: center; justify-content: space-between; background: #0b0f18; padding: 0.8rem 1rem; border-bottom: 3px solid #f5a623; gap: 10px; }
+    .qr-code { width: 48px; height: 48px; background: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; cursor: pointer; overflow: hidden; }
+    .qr-code canvas { width: 42px; height: 42px; }
+    .title-section { text-align: center; flex: 1; }
+    .title-fixed { font-size: 1.4rem; font-weight: 800; letter-spacing: 1px; background: linear-gradient(135deg, #ffe6b0, #f5a623); background-clip: text; -webkit-background-clip: text; color: transparent; }
+    .title-translated { font-size: 0.75rem; color: #b9c7d9; margin-top: 4px; }
+    .engine-icon { position: relative; cursor: pointer; width: 48px; height: 48px; display: flex; align-items: center; justify-content: center; }
+    .engine-icon .fa-car-side { font-size: 2rem; color: #f5a623; }
+    .engine-icon .fa-stethoscope { position: absolute; font-size: 1rem; top: 0; right: 0; background: #0b0f18; border-radius: 50%; padding: 2px; transform: translate(4px, -4px); color: #f5a623; }
+    .info-strip { display: flex; justify-content: space-between; background: #00000066; padding: 6px 12px; font-size: 0.7rem; flex-wrap: wrap; gap: 6px; align-items: center; }
+    .lang-device { display: flex; gap: 8px; align-items: center; }
+    .lang-select { background: #1e2a3a; border: 1px solid #f5a623; border-radius: 40px; padding: 4px 8px; color: white; font-size: 0.7rem; cursor: pointer; }
+    .device-id { background: #1e2a3a; border-radius: 40px; padding: 4px 10px; font-family: monospace; font-size: 0.7rem; }
+    .free-badge { background: #f5a62320; text-align: center; margin: 12px 12px 6px; padding: 8px; border-radius: 40px; font-weight: bold; color: #f5a623; }
+    .credit-card { background: #0f172a; border-radius: 1.5rem; margin: 12px; padding: 12px; text-align: center; border: 1px solid #f5a623; }
+    .credit-amount { font-size: 1.8rem; font-weight: 800; color: #f5a623; }
+    .pay-buttons { display: flex; gap: 10px; justify-content: center; margin: 10px 0; flex-wrap: wrap; }
+    .pay-btn { background: #10b981; border: none; border-radius: 60px; padding: 6px 14px; font-weight: bold; cursor: pointer; color: white; font-size: 0.8rem; }
+    .engine-icons-row { display: flex; justify-content: space-around; flex-wrap: wrap; gap: 12px; margin: 12px 12px 6px; padding: 8px; background: #0b0f18; border-radius: 30px; }
+    .engine-icon-item { text-align: center; cursor: pointer; min-width: 65px; }
+    .engine-icon-item i { font-size: 1.8rem; color: #f5a623; display: block; margin-bottom: 4px; }
+    .engine-icon-item span { font-size: 0.65rem; display: block; }
+    .btn-primary { background: #8b5cf6; width: 100%; padding: 12px; border: none; border-radius: 40px; font-weight: bold; color: white; margin: 12px 0; cursor: pointer; font-size: 1rem; }
+    .sensor-card { background: #1e2a3e; border-radius: 1.5rem; padding: 12px; margin: 12px; border: 2px solid #3b82f6; }
+    .sensor-header { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+    .sensor-icon { font-size: 1.6rem; color: #f5a623; }
+    .sensor-result { background: #03060c; border-radius: 1rem; padding: 8px; margin-top: 8px; font-size: 0.8rem; min-height: 55px; border: 1px dashed #f5a623; }
+    button { background: #f97316; border: none; border-radius: 40px; padding: 6px 12px; font-weight: bold; cursor: pointer; color: white; }
+    button:disabled { opacity: 0.5; cursor: not-allowed; }
+    .result-area { background: #0a1020; border-radius: 1.5rem; margin: 12px; padding: 16px; border: 2px solid #f5a623; display: none; }
+    video, canvas, .preview-img { width: 100%; max-height: 160px; border-radius: 12px; margin-top: 6px; background: black; }
+    .toast { position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%); background: #f97316; padding: 5px 15px; border-radius: 30px; opacity: 0; transition: 0.2s; z-index: 999; color: black; font-weight: bold; white-space: nowrap; }
+    .toast.show { opacity: 1; }
+    .modal-settings { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.85); display: flex; align-items: center; justify-content: center; z-index: 1000; visibility: hidden; }
+    .modal-settings.show { visibility: visible; }
+    .modal-content { background: #1e2a3a; border-radius: 2rem; padding: 20px; width: 90%; max-width: 350px; text-align: center; }
+    footer { text-align: center; padding: 12px; font-size: 0.6rem; border-top: 1px solid #2a3a5a; margin-top: 10px; }
+    .action-buttons { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 12px; }
+    .action-btn { background: #2d3a4e; padding: 6px 12px; border-radius: 40px; cursor: pointer; font-size: 0.7rem; }
+    .hidden { display: none; }
+    input, select { font-family: inherit; }
   </style>
 </head>
 <body>
@@ -1088,14 +816,19 @@ function addPaidCredits(amount) {
   updateCreditsUI();
   showToastMsg('creditsAdded', amount.toString());
 }
+
+// ============================================================
+// 5. أزرار الدفع (تم تعديل الروابط)
+// ============================================================
 document.querySelectorAll('.pay-btn').forEach(btn => {
   btn.onclick = () => {
     let pack = parseInt(btn.dataset.pack);
-    let url = pack === 1 ? "https://gum.co/engine1" : (pack === 5 ? "https://gum.co/engine5" : "https://gum.co/engine15");
+    let url = pack === 1 ? "https://mouloudkamali.gumroad.com/l/zsraan" : (pack === 5 ? "https://mouloudkamali.gumroad.com/l/vdstz" : "https://mouloudkamali.gumroad.com/l/rueip");
     window.open(url, '_blank');
     setTimeout(() => { if (confirm(t('paymentConfirm'))) addPaidCredits(pack); }, 3000);
   };
 });
+
 document.getElementById('activateLicenseBtn').onclick = () => {
   let code = document.getElementById('licenseCode').value.trim();
   if (code === 'MOULOUD2026') { admin = true; updateCreditsUI(); showToastMsg('adminActivated'); document.getElementById('adminHint').innerHTML = t('adminHint'); }
@@ -1105,7 +838,7 @@ document.getElementById('activateLicenseBtn').onclick = () => {
 updateCreditsUI();
 
 // ============================================================
-// 5. دوال الحساسات (كاميرا، ميكروفون ثلاثي، اهتزاز)
+// 6. دوال الحساسات (كاميرا، ميكروفون ثلاثي، اهتزاز)
 // ============================================================
 let sensorResults = { sound: null, vibration: null, smoke: null, temp: null };
 let exhaustStream = null;
@@ -1277,7 +1010,7 @@ function resetSensors() {
 }
 
 // ============================================================
-// 6. قاعدة الأعطال (35 عطلاً مركزاً على المحرك – نموذج 10 هنا)
+// 7. قاعدة الأعطال (35 عطلاً – نموذج 10 هنا)
 // ============================================================
 const faultsDB = [
   { sound: "screaming", vibration: "medium", smoke: "black", temp: "normal", name_ar: "فلتر هواء مسدود", name_en: "Air filter clogged", solution_ar: "نظف أو استبدل فلتر الهواء", solution_en: "Clean or replace air filter", sensorsCount: 4 },
@@ -1355,7 +1088,7 @@ document.getElementById('analyzeBtn').onclick = async () => {
 };
 
 // ============================================================
-// 7. التحكم العام
+// 8. التحكم العام
 // ============================================================
 document.getElementById('startBtn').onclick = () => {
   if (totalCredits() <= 0 && !admin) { showToastMsg('noCredits'); return; }
@@ -1377,7 +1110,7 @@ document.getElementById('settingsIcon')?.addEventListener('click', () => documen
 document.getElementById('closeSettingsBtn')?.addEventListener('click', () => document.getElementById('settingsModal').classList.remove('show'));
 
 // ============================================================
-// 8. وضع المطور (5 نقرات)
+// 9. وضع المطور (5 نقرات)
 // ============================================================
 let adminClicks = 0, adminTimer;
 document.getElementById('secretAdminIcon').onclick = () => {
@@ -1394,7 +1127,7 @@ document.getElementById('secretAdminIcon').onclick = () => {
 };
 
 // ============================================================
-// 9. قائمة اللغات
+// 10. قائمة اللغات
 // ============================================================
 function buildLangSelect() {
   let sel = document.getElementById('langSelect');
