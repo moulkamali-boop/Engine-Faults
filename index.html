@@ -144,7 +144,7 @@
 
 <script>
 // ==================================================================
-// 1. تعريف اللغات (20 لغة معروضة للمستخدم)
+// 1. تعريف اللغات (20 لغة)
 // ==================================================================
 const LANGS = {
   ar: { name: "العربية", dir: "rtl", flag: "🇸🇦", code: "ar" },
@@ -172,9 +172,8 @@ const LANGS = {
 let currentLang = localStorage.getItem('appLang') || 'ar';
 
 // ==================================================================
-// 2. الترجمات الكاملة لما يراه المستخدم (20 لغة)
-//    النصوص الثابتة: الأزرار، العناوين، أيقونات المحركات، رسائل الحالة
-//    النصوص الديناميكية (نتائج التشخيص) تُترجم أيضاً عبر نفس الكائن.
+// 2. الترجمات الكاملة لـ 20 لغة (جميع النصوص التي يراها المستخدم)
+//    تم أخذها من النسخة المستقرة السابقة وإضافة المفاتيح الجديدة للأعطال.
 // ==================================================================
 const UI_TEXTS = {
   ar: {
@@ -313,7 +312,7 @@ const UI_TEXTS = {
     exhaustSmoke: "💨 Fumo: {0}", dashTempStatus: "🌡️ Stato: {0}",
     soundSmooth: "Normale", soundScreaming: "Scarico urlante", soundKnocking: "Battito", soundThud: "Colpo profondo", soundWhistle: "Fischio", soundRoaring: "Ruggito",
     vibLow: "Basso", vibMedium: "Medio", vibHigh: "Alto", vibSevere: "Grave",
-    smokeWhite: "Bianco", smokeBlack: "Nero", smokeBlue: "Blu", smokeGray: "Grigio", smokeNone: "Nessun fumo",
+    smokeWhite: "Bianco", smokeBlack: "Nero", smokeBlue: "Bleu", smokeGray: "Grigio", smokeNone: "Nessun fumo",
     tempHigh: "Alta", tempLow: "Bassa", tempNormal: "Normale", tempUnknown: "Sconosciuta",
     noCredits: "❌ Crediti insufficienti", creditsAdded: "✅ {0} diagnosi aggiunte", diagConsumedFree: "✅ Diagnosi consumata (gratis: {0} rimaste)",
     diagConsumedPaid: "✅ Diagnosi consumata (pagata: {0} rimaste)", adminActivated: "✅ Modalità sviluppatore attivata", adminHint: "👑 Sviluppatore attivo",
@@ -666,7 +665,6 @@ function t(key, ...args) {
 }
 function setElementText(id, key, ...args) { const el = document.getElementById(id); if (el) el.innerText = t(key, ...args); }
 function setPlaceholder(id, key) { const el = document.getElementById(id); if (el) el.placeholder = t(key); }
-
 function applyTranslations() {
   setElementText('dynamicSubtitle', 'subtitle');
   setElementText('creditLabel', 'creditLabel');
@@ -703,7 +701,7 @@ function applyTranslations() {
 }
 
 // ==================================================================
-// 3. QR Code (بدون مكتبات خارجية)
+// 3. QR Code
 // ==================================================================
 function generateQR(text, canvasId) {
   const canvas = document.getElementById(canvasId);
@@ -731,9 +729,6 @@ document.getElementById('qrContainer').onclick = () => {
   showToastMsg('linkCopied');
 };
 
-// ==================================================================
-// 4. الوقت والتاريخ والموقع وهوية الجهاز
-// ==================================================================
 function getDeviceId() {
   let id = localStorage.getItem('deviceId');
   if (!id) { id = 'DEV' + Math.random().toString(36).substr(2, 8).toUpperCase(); localStorage.setItem('deviceId', id); }
@@ -756,7 +751,7 @@ function getLocation() {
 getLocation();
 
 // ==================================================================
-// 5. نظام الرصيد والإدارة (مع روابط Gumroad الحقيقية)
+// 4. الرصيد والإدارة
 // ==================================================================
 let freeUsed = parseInt(localStorage.getItem('freeUsed') || '0');
 let paid = parseInt(localStorage.getItem('paid') || '0');
@@ -831,7 +826,7 @@ document.getElementById('activateLicenseBtn').onclick = () => {
 updateCreditsUI();
 
 // ==================================================================
-// 6. حساسات (كاميرا، ميكروفون ثلاثي، اهتزاز)
+// 5. حساسات (كاميرا، ميكروفون ثلاثي، اهتزاز)
 // ==================================================================
 let sensorResults = { sound: null, vibration: null, smoke: null, temp: null };
 let exhaustStream = null;
@@ -996,7 +991,7 @@ function resetSensors() {
 }
 
 // ==================================================================
-// 7. قاعدة الأعطال (35 عطلاً مركزاً على المحرك)
+// 6. قاعدة الأعطال الكاملة (35 عطلاً)
 // ==================================================================
 const faultsDB = [
   { sound: "screaming", vibration: "medium", smoke: "black", temp: "normal", name_ar: "فلتر هواء مسدود", name_en: "Air filter clogged", solution_ar: "نظف أو استبدل فلتر الهواء", solution_en: "Clean or replace air filter", sensorsCount: 4 },
@@ -1020,7 +1015,20 @@ const faultsDB = [
   { sound: "whistle", vibration: "medium", smoke: "none", temp: "normal", name_ar: "شاحن توربو تالف", name_en: "Turbo issue", solution_ar: "فحص واستبدال التوربو", solution_en: "Inspect/replace turbo", sensorsCount: 3 },
   { sound: "smooth", vibration: "low", smoke: "white", temp: "normal", name_ar: "تكاثف طبيعي", name_en: "Normal condensation", solution_ar: "لا مشكلة", solution_en: "No issue", sensorsCount: 2 },
   { sound: "knocking", vibration: "high", smoke: "black", temp: "high", name_ar: "حساس أكسجين تالف", name_en: "Lambda sensor fault", solution_ar: "استبدال حساس الأكسجين", solution_en: "Replace O2 sensor", sensorsCount: 3 },
-  { sound: "smooth", vibration: "medium", smoke: "gray", temp: "normal", name_ar: "فلتر بنزين مسدود", name_en: "Fuel filter clogged", solution_ar: "استبدال فلتر البنزين", solution_en: "Replace fuel filter", sensorsCount: 3 }
+  { sound: "smooth", vibration: "medium", smoke: "gray", temp: "normal", name_ar: "فلتر بنزين مسدود", name_en: "Fuel filter clogged", solution_ar: "استبدال فلتر البنزين", solution_en: "Replace fuel filter", sensorsCount: 3 },
+  { sound: "knocking", vibration: "low", smoke: "blue", temp: "high", name_ar: "صمامات تالفة (تسريب ضغط)", name_en: "Valve leak (compression loss)", solution_ar: "فحص وضبط أو استبدال الصمامات", solution_en: "Check, adjust or replace valves", sensorsCount: 3 },
+  { sound: "knocking", vibration: "medium", smoke: "black", temp: "normal", name_ar: "كاربيراتور متسخ", name_en: "Dirty carburetor", solution_ar: "تنظيف الكاربيراتور أو ضبطه", solution_en: "Clean or adjust carburetor", sensorsCount: 3 },
+  { sound: "knocking", vibration: "high", smoke: "black", temp: "normal", name_ar: "نظام حقن وقود تالف (بخاخ معطل)", name_en: "Fuel injector failure", solution_ar: "فحص وتنظيف أو استبدال البخاخ", solution_en: "Check, clean or replace injector", sensorsCount: 3 },
+  { sound: "knocking", vibration: "medium", smoke: "none", temp: "normal", name_ar: "سلك شمعة تالف", name_en: "Spark plug wire damage", solution_ar: "فحص واستبدال سلك البوجي", solution_en: "Check and replace spark plug wire", sensorsCount: 3 },
+  { sound: "smooth", vibration: "high", smoke: "none", temp: "normal", name_ar: "بوبينة إشعال تالفة (كويل)", name_en: "Ignition coil failure", solution_ar: "فحص واستبدال البوبينة", solution_en: "Check and replace ignition coil", sensorsCount: 3 },
+  { sound: "knocking", vibration: "high", smoke: "white", temp: "high", name_ar: "توقيت الإشعال مبكر جداً", name_en: "Ignition timing too advanced", solution_ar: "ضبط توقيت الإشعال إلى التأخير", solution_en: "Retard ignition timing", sensorsCount: 3 },
+  { sound: "whistle", vibration: "low", smoke: "none", temp: "high", name_ar: "مضخة ماء تالفة", name_en: "Water pump failure", solution_ar: "استبدال مضخة الماء", solution_en: "Replace water pump", sensorsCount: 3 },
+  { sound: "smooth", vibration: "low", smoke: "none", temp: "high", name_ar: "ردياتير مسدود", name_en: "Radiator clogged", solution_ar: "تنظيف أو استبدال الردياتير", solution_en: "Clean or replace radiator", sensorsCount: 3 },
+  { sound: "smooth", vibration: "low", smoke: "none", temp: "high", name_ar: "مروحة تبريد لا تعمل", name_en: "Cooling fan not working", solution_ar: "فحص المروحة والحساس والفيوز", solution_en: "Check fan, sensor and fuse", sensorsCount: 3 },
+  { sound: "knocking", vibration: "low", smoke: "blue", temp: "high", name_ar: "زيت محرك منخفض (بدون تسرب خارجي)", name_en: "Low engine oil level", solution_ar: "إضافة زيت، فحص التسريب الداخلي", solution_en: "Add oil, check internal leakage", sensorsCount: 3 },
+  { sound: "smooth", vibration: "low", smoke: "none", temp: "low", name_ar: "حساس كرنك (PMH) تالف", name_en: "Crankshaft sensor (CKP) failure", solution_ar: "استبدال حساس الكرنك", solution_en: "Replace crankshaft sensor", sensorsCount: 3 },
+  { sound: "smooth", vibration: "low", smoke: "black", temp: "normal", name_ar: "حساس تدفق الهواء (MAF) تالف", name_en: "Mass air flow sensor (MAF) failure", solution_ar: "تنظيف أو استبدال حساس MAF", solution_en: "Clean or replace MAF sensor", sensorsCount: 3 },
+  { sound: "smooth", vibration: "low", smoke: "none", temp: "normal", name_ar: "تسريب زيت خارجي (جوانن)", name_en: "External oil leak (gasket)", solution_ar: "استبدال الجوانن المتسربة", solution_en: "Replace leaking gaskets", sensorsCount: 2 }
 ];
 
 function inferFault() {
@@ -1082,9 +1090,6 @@ document.getElementById('analyzeBtn').onclick = async () => {
   };
 };
 
-// ==================================================================
-// 8. التحكم العام
-// ==================================================================
 document.getElementById('startBtn').onclick = () => {
   if (totalCredits() <= 0 && !admin) { showToastMsg('noCredits'); return; }
   document.getElementById('diagPanel').style.display = 'block';
@@ -1104,9 +1109,6 @@ document.querySelectorAll('.engine-icon-item').forEach(el => {
 document.getElementById('settingsIcon')?.addEventListener('click', () => document.getElementById('settingsModal').classList.add('show'));
 document.getElementById('closeSettingsBtn')?.addEventListener('click', () => document.getElementById('settingsModal').classList.remove('show'));
 
-// ==================================================================
-// 9. وضع المطور (5 نقرات)
-// ==================================================================
 let adminClicks = 0, adminTimer;
 document.getElementById('secretAdminIcon').onclick = () => {
   adminClicks++;
@@ -1121,9 +1123,6 @@ document.getElementById('secretAdminIcon').onclick = () => {
   }
 };
 
-// ==================================================================
-// 10. بناء قائمة اللغات
-// ==================================================================
 function buildLangSelect() {
   let sel = document.getElementById('langSelect');
   if (!sel) return;
